@@ -1,1 +1,1 @@
-a smple powrtshell scrpit with opstions for on screen watermark 
+a simple powershell script with options for on screen watermark
