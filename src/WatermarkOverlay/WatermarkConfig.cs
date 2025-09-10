@@ -69,7 +69,7 @@ namespace WatermarkOverlay
                 FallbackText = FallbackText,
                 FontSize = FontSize,
                 Opacity = Opacity,
-                Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(Color)!,
+                Color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(Color)!,
                 TileAngleDegrees = TileAngleDegrees,
                 TileStep = TileStep
             };

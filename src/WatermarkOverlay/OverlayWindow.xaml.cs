@@ -109,7 +109,7 @@ namespace WatermarkOverlay
                 AlignmentY = AlignmentY.Center
             };
 
-            var rect = new Rectangle
+            var rect = new System.Windows.Shapes.Rectangle
             {
                 Width = Width,
                 Height = Height,
@@ -127,7 +127,7 @@ namespace WatermarkOverlay
                 FontSize = _config.FontSize,
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(_config.Color),
-                Background = Brushes.Transparent,
+                Background = System.Windows.Media.Brushes.Transparent,
                 IsHitTestVisible = false
             };
         }
