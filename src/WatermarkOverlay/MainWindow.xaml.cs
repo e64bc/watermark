@@ -13,7 +13,7 @@ namespace WatermarkOverlay
     public partial class MainWindow : Window
     {
         private readonly List<OverlayWindow> _overlays = new();
-        private readonly Timer _tickTimer = new(1000);
+        private readonly System.Timers.Timer _tickTimer = new(1000);
 
         public MainWindow()
         {
