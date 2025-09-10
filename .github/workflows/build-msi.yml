@@ -51,7 +51,6 @@ jobs:
           # Build the app first (already done above)
           # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
           candle.exe `
-            -dConfiguration=$configuration `
             -out "$objDir/Product.wixobj" `
             $wxs
           # Link -> .msi; include NetFx extension if needed
