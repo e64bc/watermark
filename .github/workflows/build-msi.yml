@@ -1,0 +1,47 @@
+name: Build MSI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+      - 'installer/**'
+      - 'WatermarkOverlay.sln'
+      - '.github/workflows/build-msi.yml'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install WiX Toolset 3.11
+        shell: powershell
+        run: |
+          choco install wixtoolset --version=3.11.2 --no-progress -y
+
+      - name: Restore
+        run: dotnet restore "src/WatermarkOverlay/WatermarkOverlay.csproj"
+
+      - name: Build app (Release)
+        run: dotnet build "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release --no-restore
+
+      - name: Build MSI (Release)
+        shell: cmd
+        run: msbuild "WatermarkOverlay.sln" /p:Configuration=Release /m
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WatermarkOverlay-MSI
+          path: |
+            installer/WiX/bin/Release/*.msi
+          if-no-files-found: error
+

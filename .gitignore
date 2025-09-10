@@ -1,0 +1,13 @@
+bin/
+obj/
+/.vs/
+/packages/
+*.user
+*.suo
+*.cache
+*.log
+*.DS_Store
+*.zip
+installer/WiX/bin/
+installer/WiX/obj/
+

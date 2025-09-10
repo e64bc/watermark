@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="WatermarkOverlay" Language="1033" Version="1.0.0.0" Manufacturer="YourCompany" UpgradeCode="D7E1F8E8-53A1-4C77-9E7C-2A6A9B5BDE10">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="WatermarkOverlay" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <!-- Allow silent install: msiexec /i WatermarkOverlay.msi /qn -->
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="WatermarkOverlay" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="WatermarkOverlay" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="MainExe" Guid="*">
+        <File Source="..\..\src\WatermarkOverlay\bin\$(var.Configuration)\net8.0-windows\WatermarkOverlay.exe" KeyPath="yes" />
+        <RegistryValue Root="HKLM" Key="Software\WatermarkOverlay" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+
+      <Component Id="AppSettings" Guid="*">
+        <File Source="..\..\src\WatermarkOverlay\bin\$(var.Configuration)\net8.0-windows\appsettings.json" KeyPath="yes" />
+      </Component>
+
+      <Component Id="ShortcutComponent" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Name="WatermarkOverlay" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" Advertise="no" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\WatermarkOverlay" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <Icon Id="AppIcon.ico" SourceFile="AppIcon.ico" />
+  </Fragment>
+</Wix>
+
