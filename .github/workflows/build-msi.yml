@@ -36,7 +36,8 @@ jobs:
         run: dotnet restore "src/WatermarkOverlay/WatermarkOverlay.csproj"
 
       - name: Build app (Release)
-        run: dotnet build "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release --no-restore
+        run: |
+          dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained false -p:PublishSingleFile=false
 
       - name: Build MSI with WiX (Release)
         shell: powershell
