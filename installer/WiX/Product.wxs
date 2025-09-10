@@ -7,6 +7,8 @@
 
     <Feature Id="ProductFeature" Title="WatermarkOverlay" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <!-- Harvested files from publish folder -->
+      <ComponentGroupRef Id="PublishFiles" />
     </Feature>
 
     <!-- Allow silent install: msiexec /i WatermarkOverlay.msi /qn -->
@@ -25,10 +27,6 @@
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="MainExe" Guid="*">
-        <File Source="src\WatermarkOverlay\bin\Release\net8.0-windows\win-x64\publish\WatermarkOverlay.exe" KeyPath="yes" />
-      </Component>
-
       <Component Id="InstallRegistry" Guid="*">
         <RegistryValue Root="HKLM" Key="Software\WatermarkOverlay" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
@@ -36,10 +34,6 @@
       <!-- Auto-run at login for all users -->
       <Component Id="AutoRunAllUsers" Guid="*">
         <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="WatermarkOverlay" Type="string" Value="[INSTALLFOLDER]WatermarkOverlay.exe" KeyPath="yes" />
-      </Component>
-
-      <Component Id="AppSettings" Guid="*">
-        <File Source="src\WatermarkOverlay\bin\Release\net8.0-windows\win-x64\publish\appsettings.json" KeyPath="yes" />
       </Component>
 
       <Component Id="ShortcutComponent" Guid="*">

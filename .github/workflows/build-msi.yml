@@ -35,9 +35,10 @@ jobs:
       - name: Restore
         run: dotnet restore "src/WatermarkOverlay/WatermarkOverlay.csproj"
 
-      - name: Build app (Release)
+      - name: Build app (Release, self-contained)
         run: |
-          dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained false -p:PublishSingleFile=false
+          dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false
+          echo "Publish output:" && dir src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish | cat
 
       - name: Build MSI with WiX (Release)
         shell: powershell
@@ -45,20 +46,21 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $configuration = 'Release'
           $wxs = "installer/WiX/Product.wxs"
+          $harvest = "installer/WiX/PublishFiles.wxs"
           $objDir = "installer/WiX/obj/$configuration"
           $binDir = "installer/WiX/bin/$configuration"
           New-Item -ItemType Directory -Force -Path $objDir | Out-Null
           New-Item -ItemType Directory -Force -Path $binDir | Out-Null
+          # Harvest publish folder into a component group
+          heat dir src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish `
+            -cg PublishFiles `
+            -dr INSTALLFOLDER `
+            -srd -sreg -gg -sfrag -out $harvest
           # Build the app first (already done above)
           # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
-          candle.exe `
-            -out "$objDir/Product.wixobj" `
-            $wxs
+          candle.exe -out "$objDir/" $wxs $harvest
           # Link -> .msi; include NetFx extension if needed
-          light.exe `
-            -ext WixNetFxExtension `
-            -out "$binDir/WatermarkOverlay.msi" `
-            "$objDir/Product.wixobj"
+          light.exe -ext WixNetFxExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj"
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
