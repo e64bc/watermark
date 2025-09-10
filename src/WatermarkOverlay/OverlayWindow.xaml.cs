@@ -20,14 +20,15 @@ namespace WatermarkOverlay
             _screen = targetScreen;
             _config = config;
 
-            // Position the overlay to the bounds of the monitor
-            Left = _screen.Bounds.Left;
-            Top = _screen.Bounds.Top;
-            Width = _screen.Bounds.Width;
-            Height = _screen.Bounds.Height;
+            // Position the overlay to the bounds of the monitor (apply DPI scaling on load)
+            Loaded += (_, __) =>
+            {
+                ApplyBoundsWithDpi();
+                MakeWindowClickThrough();
+                Render();
+            };
 
-            Loaded += (_, __) => MakeWindowClickThrough();
-            Loaded += (_, __) => Render();
+            DpiChanged += (_, __) => ApplyBoundsWithDpi();
         }
 
         public void RefreshDynamicContent()
@@ -117,6 +118,18 @@ namespace WatermarkOverlay
                 IsHitTestVisible = false
             };
             CanvasRoot.Children.Add(rect);
+        }
+
+        private void ApplyBoundsWithDpi()
+        {
+            var dpi = VisualTreeHelper.GetDpi(this);
+            double scaleX = 96.0 / dpi.PixelsPerInchX;
+            double scaleY = 96.0 / dpi.PixelsPerInchY;
+
+            Left = _screen.Bounds.Left * scaleX;
+            Top = _screen.Bounds.Top * scaleY;
+            Width = _screen.Bounds.Width * scaleX;
+            Height = _screen.Bounds.Height * scaleY;
         }
 
         private TextBlock CreateText(string text)
