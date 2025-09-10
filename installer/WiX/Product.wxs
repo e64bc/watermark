@@ -33,12 +33,18 @@
         <RegistryValue Root="HKLM" Key="Software\WatermarkOverlay" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
 
+      <!-- Auto-run at login for all users -->
+      <Component Id="AutoRunAllUsers" Guid="*">
+        <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="WatermarkOverlay" Type="string" Value="[INSTALLFOLDER]WatermarkOverlay.exe" KeyPath="yes" />
+      </Component>
+
       <Component Id="AppSettings" Guid="*">
         <File Source="src\WatermarkOverlay\bin\Release\net8.0-windows\win-x64\publish\appsettings.json" KeyPath="yes" />
       </Component>
 
       <Component Id="ShortcutComponent" Guid="*">
         <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Name="WatermarkOverlay" WorkingDirectory="INSTALLFOLDER" Advertise="no" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
+        <Shortcut Id="UninstallShortcut" Directory="ApplicationProgramsFolder" Name="Uninstall WatermarkOverlay" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
         <RemoveFile Id="RemoveStartMenuFiles" Directory="ApplicationProgramsFolder" Name="*" On="uninstall" />
         <RemoveFolder Id="RemoveStartMenuFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\WatermarkOverlay" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
