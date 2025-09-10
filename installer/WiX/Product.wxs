@@ -37,10 +37,10 @@
         <File Source="src\WatermarkOverlay\bin\Release\net8.0-windows\win-x64\publish\appsettings.json" KeyPath="yes" />
       </Component>
 
-      <Component Id="ShortcutComponent" Guid="*">
-        <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Name="WatermarkOverlay" WorkingDirectory="INSTALLFOLDER" Advertise="no" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
-        <RemoveFile Id="RemoveStartMenuFiles" On="uninstall" Directory="ApplicationProgramsFolder" Name="*" />
-        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+      <Component Id="ShortcutComponent" Guid="*" Directory="ApplicationProgramsFolder">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="WatermarkOverlay" WorkingDirectory="INSTALLFOLDER" Advertise="no" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
+        <RemoveFile Id="RemoveStartMenuFiles" On="uninstall" Name="*" />
+        <RemoveFolder Id="RemoveStartMenuFolder" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\WatermarkOverlay" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
