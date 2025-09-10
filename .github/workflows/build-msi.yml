@@ -3,7 +3,7 @@ name: Build MSI
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches: [ "**" ]
     paths:
       - 'src/**'
       - 'installer/**'
