@@ -8,7 +8,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>WatermarkOverlay</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath>$(WixToolPath)\wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition="Exists('$(WixToolPath)\wix.targets')">$(WixToolPath)\wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition="'$(WixTargetsPath)' == '' and Exists('$(WixToolPath)\Wix.targets')">$(WixToolPath)\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition="'$(WixTargetsPath)' == ''">$(WixToolPath)\wix.targets</WixTargetsPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />

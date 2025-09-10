@@ -22,10 +22,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install WiX Toolset 3.11
+      - name: Ensure WiX Toolset is installed
         shell: powershell
         run: |
-          choco install wixtoolset --version=3.11.2 --no-progress -y
+          choco upgrade wixtoolset --no-progress -y
+          $candle = Get-Command candle.exe -ErrorAction SilentlyContinue
+          if (-not $candle) { throw "WiX Toolset not found on PATH after install." }
 
       - name: Restore
         run: dotnet restore "src/WatermarkOverlay/WatermarkOverlay.csproj"
