@@ -38,9 +38,27 @@ jobs:
       - name: Build app (Release)
         run: dotnet build "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release --no-restore
 
-      - name: Build MSI (Release)
-        shell: cmd
-        run: msbuild "WatermarkOverlay.sln" /p:Configuration=Release /m
+      - name: Build MSI with WiX (Release)
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $configuration = 'Release'
+          $wxs = "installer/WiX/Product.wxs"
+          $objDir = "installer/WiX/obj/$configuration"
+          $binDir = "installer/WiX/bin/$configuration"
+          New-Item -ItemType Directory -Force -Path $objDir | Out-Null
+          New-Item -ItemType Directory -Force -Path $binDir | Out-Null
+          # Build the app first (already done above)
+          # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
+          candle.exe `
+            -dConfiguration=$configuration `
+            -out "$objDir/Product.wixobj" `
+            $wxs
+          # Link -> .msi; include NetFx extension if needed
+          light.exe `
+            -ext WixNetFxExtension `
+            -out "$binDir/WatermarkOverlay.msi" `
+            "$objDir/Product.wixobj"
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
