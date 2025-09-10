@@ -19,7 +19,7 @@ namespace WatermarkOverlay
 
         public double FontSize { get; set; } = 28;
         public double Opacity { get; set; } = 0.2;
-        public Color Color { get; set; } = Color.FromArgb(255, 200, 0, 0);
+        public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Color.FromArgb(255, 200, 0, 0);
 
         public double TileAngleDegrees { get; set; } = -30;
         public double TileStep { get; set; } = 360;
@@ -69,7 +69,7 @@ namespace WatermarkOverlay
                 FallbackText = FallbackText,
                 FontSize = FontSize,
                 Opacity = Opacity,
-                Color = (Color)ColorConverter.ConvertFromString(Color)!,
+                Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(Color)!,
                 TileAngleDegrees = TileAngleDegrees,
                 TileStep = TileStep
             };
