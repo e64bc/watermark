@@ -31,6 +31,9 @@
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationProgramsFolder" Name="WatermarkOverlay" />
       </Directory>
+      <Directory Id="WindowsFolder" Name="Windows">
+        <Directory Id="SystemFolder" Name="System32" />
+      </Directory>
       <Directory Id="CommonStartupFolder" Name="Startup" />
     </Directory>
   </Fragment>
