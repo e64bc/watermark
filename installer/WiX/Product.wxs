@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Product Id="*" Name="WatermarkOverlay" Language="1033" Version="1.0.0.0" Manufacturer="YourCompany" UpgradeCode="D7E1F8E8-53A1-4C77-9E7C-2A6A9B5BDE10">
     <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -34,6 +34,27 @@
       <!-- Auto-run at login for all users -->
       <Component Id="AutoRunAllUsers" Guid="*">
         <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="WatermarkOverlay" Type="string" Value="[INSTALLFOLDER]WatermarkOverlay.exe" KeyPath="yes" />
+      </Component>
+
+      <!-- Scheduled Task: start at user logon and on workstation unlock -->
+      <Component Id="ScheduledTask" Guid="*">
+        <util:Task Id="WatermarkOverlayTask"
+                   Name="WatermarkOverlay"
+                   Path="[INSTALLFOLDER]WatermarkOverlay.exe"
+                   Arguments=""
+                   WorkingDirectory="[INSTALLFOLDER]"
+                   Execute="immediate"
+                   LogonType="InteractiveToken"
+                   RunLevel="LeastPrivilege"
+                   Enabled="yes">
+          <util:TaskPrincipal LogonType="InteractiveToken" RunLevel="LeastPrivilege" />
+          <util:TaskTriggers>
+            <util:LogonTrigger />
+            <util:SessionStateChangeTrigger StateChange="SessionUnlock" />
+          </util:TaskTriggers>
+          <util:TaskSettings StartWhenAvailable="yes" MultipleInstances="IgnoreNew" />
+        </util:Task>
+        <RegistryValue Root="HKLM" Key="Software\WatermarkOverlay" Name="ScheduledTask" Type="integer" Value="1" KeyPath="yes" />
       </Component>
 
       <Component Id="ShortcutComponent" Guid="*">

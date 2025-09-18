@@ -62,7 +62,7 @@ jobs:
           # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
           candle.exe -dPublishDir="$publishDir" -out "$objDir/" $wxs $harvest
           # Link -> .msi; include NetFx extension if needed
-          light.exe -ext WixNetFxExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj"
+          light.exe -ext WixNetFxExtension -ext WixUtilExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj"
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
