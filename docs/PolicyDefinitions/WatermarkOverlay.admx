@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<policyDefinitions revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
+  <policyNamespaces>
+    <target prefix="WatermarkOverlay" namespace="WatermarkOverlay.Policies"/>
+    <using prefix="windows" namespace="Microsoft.Policies.Windows"/>
+  </policyNamespaces>
+  <resources minRequiredRevision="1.0" />
+  <supportedOn>
+    <definitions>
+      <definition name="SUPPORTED_Win10" displayName="$(string.SUPPORTED_Win10)"/>
+    </definitions>
+  </supportedOn>
+  <categories>
+    <category name="WatermarkOverlay_Category" displayName="$(string.Category_WatermarkOverlay)"/>
+  </categories>
+  <policies>
+    <policy name="Mode" class="Machine" displayName="$(string.Mode)" explainText="$(string.Mode_Explain)" key="Software\Policies\WatermarkOverlay" valueName="Mode" presentation="$(presentation.Mode)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="Corner" class="Machine" displayName="$(string.Corner)" explainText="$(string.Corner_Explain)" key="Software\Policies\WatermarkOverlay" valueName="Corner" presentation="$(presentation.Corner)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="ShowUsername" class="Machine" displayName="$(string.ShowUsername)" explainText="$(string.ShowUsername_Explain)" key="Software\Policies\WatermarkOverlay" valueName="ShowUsername" valueType="numeric" presentation="$(presentation.ShowUsername)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="ShowTime" class="Machine" displayName="$(string.ShowTime)" explainText="$(string.ShowTime_Explain)" key="Software\Policies\WatermarkOverlay" valueName="ShowTime" valueType="numeric" presentation="$(presentation.ShowTime)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="TimeFormat" class="Machine" displayName="$(string.TimeFormat)" explainText="$(string.TimeFormat_Explain)" key="Software\Policies\WatermarkOverlay" valueName="TimeFormat" presentation="$(presentation.TimeFormat)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="FontSize" class="Machine" displayName="$(string.FontSize)" explainText="$(string.FontSize_Explain)" key="Software\Policies\WatermarkOverlay" valueName="FontSize" valueType="decimal" presentation="$(presentation.FontSize)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="Opacity" class="Machine" displayName="$(string.Opacity)" explainText="$(string.Opacity_Explain)" key="Software\Policies\WatermarkOverlay" valueName="Opacity" presentation="$(presentation.Opacity)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="Color" class="Machine" displayName="$(string.Color)" explainText="$(string.Color_Explain)" key="Software\Policies\WatermarkOverlay" valueName="Color" presentation="$(presentation.Color)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="TileAngleDegrees" class="Machine" displayName="$(string.TileAngleDegrees)" explainText="$(string.TileAngleDegrees_Explain)" key="Software\Policies\WatermarkOverlay" valueName="TileAngleDegrees" presentation ="$(presentation.TileAngleDegrees)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+    <policy name="TileStep" class="Machine" displayName="$(string.TileStep)" explainText="$(string.TileStep_Explain)" key="Software\Policies\WatermarkOverlay" valueName="TileStep" presentation ="$(presentation.TileStep)" category="WatermarkOverlay_Category" supportedOn="SUPPORTED_Win10" />
+  </policies>
+  <presentations>
+    <presentation id="Mode">
+      <dropdownList refId="ModeVal">
+        <listItem displayName="Tiled" value="Tiled"/>
+        <listItem displayName="Corner" value="Corner"/>
+      </dropdownList>
+    </presentation>
+    <presentation id="Corner">
+      <dropdownList refId="CornerVal">
+        <listItem displayName="TopLeft" value="TopLeft"/>
+        <listItem displayName="TopRight" value="TopRight"/>
+        <listItem displayName="BottomLeft" value="BottomLeft"/>
+        <listItem displayName="BottomRight" value="BottomRight"/>
+      </dropdownList>
+    </presentation>
+    <presentation id="ShowUsername"><checkBox refId="ShowUsernameVal"/></presentation>
+    <presentation id="ShowTime"><checkBox refId="ShowTimeVal"/></presentation>
+    <presentation id="TimeFormat"><textBox refId="TimeFormatVal"/></presentation>
+    <presentation id="FontSize"><decimalTextBox refId="FontSizeVal" spinBoxIncrement="1" /></presentation>
+    <presentation id="Opacity"><textBox refId="OpacityVal"/></presentation>
+    <presentation id="Color"><textBox refId="ColorVal"/></presentation>
+    <presentation id="TileAngleDegrees"><textBox refId="TileAngleVal"/></presentation>
+    <presentation id="TileStep"><decimalTextBox refId="TileStepVal" spinBoxIncrement="10" /></presentation>
+  </presentations>
+  <resources>
+    <stringTable>
+      <string id="SUPPORTED_Win10">Windows 10 or later</string>
+      <string id="Category_WatermarkOverlay">WatermarkOverlay</string>
+      <string id="Mode">Display Mode</string>
+      <string id="Mode_Explain">Tiled or Corner.</string>
+      <string id="Corner">Corner (for Corner mode)</string>
+      <string id="Corner_Explain">TopLeft, TopRight, BottomLeft, BottomRight.</string>
+      <string id="ShowUsername">Show Username</string>
+      <string id="ShowUsername_Explain">1 = true, 0 = false.</string>
+      <string id="ShowTime">Show Time</string>
+      <string id="ShowTime_Explain">1 = true, 0 = false.</string>
+      <string id="TimeFormat">Time Format</string>
+      <string id="TimeFormat_Explain">e.g., MM-dd HH:mm.</string>
+      <string id="FontSize">Font Size</string>
+      <string id="FontSize_Explain">Numeric size (e.g., 20).</string>
+      <string id="Opacity">Opacity</string>
+      <string id="Opacity_Explain">0.0–1.0 (e.g., 0.18).</string>
+      <string id="Color">Color (ARGB hex)</string>
+      <string id="Color_Explain">e.g., #60FF0000.</string>
+      <string id="TileAngleDegrees">Tile Angle (degrees)</string>
+      <string id="TileAngleDegrees_Explain">e.g., -30.</string>
+      <string id="TileStep">Tile Step (px)</string>
+      <string id="TileStep_Explain">Spacing between repeats, e.g., 360.</string>
+    </stringTable>
+  </resources>
+</policyDefinitions>
+
+
