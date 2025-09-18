@@ -50,7 +50,7 @@ jobs:
           $harvest = "installer/WiX/PublishFiles.wxs"
           $objDir = "installer/WiX/obj/$configuration"
           $binDir = "installer/WiX/bin/$configuration"
-          $publishDir = "$(Resolve-Path -LiteralPath 'src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish').Path"
+          $publishDir = (Resolve-Path -LiteralPath 'src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish').Path
           New-Item -ItemType Directory -Force -Path $objDir | Out-Null
           New-Item -ItemType Directory -Force -Path $binDir | Out-Null
           # Harvest publish folder into a component group
