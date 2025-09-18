@@ -25,13 +25,12 @@ namespace WatermarkOverlay
         public double TileStep { get; set; } = 360;
 
         public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-        public static string UserConfigPath
+        public static string ProgramDataConfigPath
         {
             get
             {
-                var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                var dir = Path.Combine(appData, "WatermarkOverlay");
-                try { Directory.CreateDirectory(dir); } catch { }
+                var commonAppData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                var dir = Path.Combine(commonAppData, "WatermarkOverlay");
                 return Path.Combine(dir, "appsettings.json");
             }
         }
@@ -40,11 +39,11 @@ namespace WatermarkOverlay
         {
             try
             {
-                if (File.Exists(UserConfigPath))
+                if (File.Exists(ProgramDataConfigPath))
                 {
-                    var textUser = File.ReadAllText(UserConfigPath);
-                    var cfgUser = JsonConvert.DeserializeObject<WatermarkConfigOnDisk>(textUser);
-                    return cfgUser?.ToConfig() ?? new WatermarkConfig();
+                    var textPd = File.ReadAllText(ProgramDataConfigPath);
+                    var cfgPd = JsonConvert.DeserializeObject<WatermarkConfigOnDisk>(textPd);
+                    return cfgPd?.ToConfig() ?? new WatermarkConfig();
                 }
                 if (File.Exists(ConfigPath))
                 {
