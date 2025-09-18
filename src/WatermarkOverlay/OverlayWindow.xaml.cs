@@ -78,7 +78,7 @@ namespace WatermarkOverlay
 
             var margin = 12.0;
             // Measure text to avoid clipping on right/bottom edges
-            tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            tb.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
             var size = tb.DesiredSize;
             double x = 0, y = 0;
             switch (_config.Corner)
