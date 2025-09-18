@@ -71,8 +71,11 @@
   <Fragment>
     <ComponentGroup Id="ConfiguratorComponents" Directory="INSTALLFOLDER">
       <Component Id="ConfiguratorExe" Guid="*">
-        <File Source="src\WatermarkConfigurator\bin\Release\net8.0-windows\WatermarkConfigurator.exe" KeyPath="yes" />
+        <File Source="src\WatermarkConfigurator\bin\Release\net8.0-windows\WatermarkConfigurator.exe" />
+      </Component>
+      <Component Id="ConfiguratorShortcutComponent" Guid="*">
         <Shortcut Id="ConfiguratorShortcut" Directory="ApplicationProgramsFolder" Name="Watermark Configurator (Admin)" Target="[INSTALLFOLDER]WatermarkConfigurator.exe" />
+        <RegistryValue Root="HKCU" Key="Software\WatermarkOverlay" Name="ConfiguratorShortcut" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
