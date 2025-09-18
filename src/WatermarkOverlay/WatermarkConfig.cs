@@ -110,7 +110,7 @@ namespace WatermarkOverlay
     }
 
     // Helper to serialize Color as hex
-    internal class WatermarkConfigOnDisk
+    public class WatermarkConfigOnDisk
     {
         public string Mode { get; set; } = "Tiled";
         public string Corner { get; set; } = "TopRight";
