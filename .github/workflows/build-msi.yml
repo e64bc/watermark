@@ -38,7 +38,7 @@ jobs:
       - name: Build app (Release, self-contained)
         shell: powershell
         run: |
-          dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false
+          dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:UseAppHost=true
           Write-Host "Publish output:"; Get-ChildItem -LiteralPath src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish -Force
           dotnet build "src/WatermarkConfigurator/WatermarkConfigurator.csproj" -c Release
 

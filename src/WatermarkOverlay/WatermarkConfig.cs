@@ -76,7 +76,7 @@ namespace WatermarkOverlay
                 cfg.Opacity = GetDouble(key, "Opacity", cfg.Opacity);
                 var colorStr = key.GetValue("Color") as string;
                 if (!string.IsNullOrWhiteSpace(colorStr))
-                    cfg.Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(colorStr)!;
+                    cfg.Color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(colorStr)!;
                 cfg.TileAngleDegrees = GetDouble(key, "TileAngleDegrees", cfg.TileAngleDegrees);
                 cfg.TileStep = GetDouble(key, "TileStep", cfg.TileStep);
                 return cfg;
