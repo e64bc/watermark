@@ -14,11 +14,11 @@ namespace WatermarkOverlay
         public Corner Corner { get; set; } = Corner.TopRight;
         public bool ShowUsername { get; set; } = true;
         public bool ShowTime { get; set; } = true;
-        public string TimeFormat { get; set; } = "yyyy-MM-dd HH:mm";
+        public string TimeFormat { get; set; } = "MM-dd HH:mm";
         public string? FallbackText { get; set; } = null;
 
-        public double FontSize { get; set; } = 28;
-        public double Opacity { get; set; } = 0.2;
+        public double FontSize { get; set; } = 20;
+        public double Opacity { get; set; } = 0.18;
         public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Color.FromArgb(255, 200, 0, 0);
 
         public double TileAngleDegrees { get; set; } = -30;
@@ -49,7 +49,7 @@ namespace WatermarkOverlay
         public string Corner { get; set; } = "TopRight";
         public bool ShowUsername { get; set; } = true;
         public bool ShowTime { get; set; } = true;
-        public string TimeFormat { get; set; } = "yyyy-MM-dd HH:mm";
+        public string TimeFormat { get; set; } = "MM-dd HH:mm";
         public string? FallbackText { get; set; } = null;
         public double FontSize { get; set; } = 28;
         public double Opacity { get; set; } = 0.2;
