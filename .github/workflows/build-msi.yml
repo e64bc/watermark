@@ -40,7 +40,8 @@ jobs:
         run: |
           dotnet publish "src/WatermarkOverlay/WatermarkOverlay.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:UseAppHost=true
           Write-Host "Publish output:"; Get-ChildItem -LiteralPath src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish -Force
-          dotnet build "src/WatermarkConfigurator/WatermarkConfigurator.csproj" -c Release
+          dotnet publish "src/WatermarkConfigurator/WatermarkConfigurator.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:UseAppHost=true
+          Write-Host "Configurator publish output:"; Get-ChildItem -LiteralPath src/WatermarkConfigurator/bin/Release/net8.0-windows/win-x64/publish -Force
 
       - name: Build MSI with WiX (Release)
         shell: powershell
@@ -49,9 +50,11 @@ jobs:
           $configuration = 'Release'
           $wxs = "installer/WiX/Product.wxs"
           $harvest = "installer/WiX/PublishFiles.wxs"
+          $harvestCfg = "installer/WiX/PublishConfigurator.wxs"
           $objDir = "installer/WiX/obj/$configuration"
           $binDir = "installer/WiX/bin/$configuration"
           $publishDir = (Resolve-Path -LiteralPath 'src/WatermarkOverlay/bin/Release/net8.0-windows/win-x64/publish').Path
+          $cfgPublishDir = (Resolve-Path -LiteralPath 'src/WatermarkConfigurator/bin/Release/net8.0-windows/win-x64/publish').Path
           New-Item -ItemType Directory -Force -Path $objDir | Out-Null
           New-Item -ItemType Directory -Force -Path $binDir | Out-Null
           # Harvest publish folder into a component group
@@ -59,11 +62,15 @@ jobs:
             -cg PublishFiles `
             -dr INSTALLFOLDER `
             -srd -sreg -gg -sfrag -var var.PublishDir -out $harvest
+          heat dir $cfgPublishDir `
+            -cg ConfiguratorPublishFiles `
+            -dr INSTALLFOLDER `
+            -srd -sreg -gg -sfrag -var var.CfgPublishDir -out $harvestCfg
           # Build the app first (already done above)
           # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
-          candle.exe -ext WixUtilExtension -dPublishDir="$publishDir" -out "$objDir/" $wxs $harvest
+          candle.exe -ext WixUtilExtension -dPublishDir="$publishDir" -dCfgPublishDir="$cfgPublishDir" -out "$objDir/" $wxs $harvest $harvestCfg
           # Link -> .msi; include NetFx extension if needed
-          light.exe -ext WixNetFxExtension -ext WixUtilExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj"
+          light.exe -ext WixNetFxExtension -ext WixUtilExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj" "$objDir/PublishConfigurator.wixobj"
 
       - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
