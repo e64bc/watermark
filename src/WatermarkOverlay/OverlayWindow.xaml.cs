@@ -36,6 +36,12 @@ namespace WatermarkOverlay
             Render();
         }
 
+        public void SetConfig(WatermarkConfig cfg)
+        {
+            _config = cfg;
+            Render();
+        }
+
         private void Render()
         {
             CanvasRoot.Children.Clear();

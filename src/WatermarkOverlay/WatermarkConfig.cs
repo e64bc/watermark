@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using Newtonsoft.Json;
+using Microsoft.Win32;
 
 namespace WatermarkOverlay
 {
@@ -39,6 +40,8 @@ namespace WatermarkOverlay
         {
             try
             {
+                var fromPolicy = LoadFromPolicy();
+                if (fromPolicy != null) return fromPolicy;
                 if (File.Exists(ProgramDataConfigPath))
                 {
                     var textPd = File.ReadAllText(ProgramDataConfigPath);
@@ -54,6 +57,55 @@ namespace WatermarkOverlay
             }
             catch { }
             return new WatermarkConfig();
+        }
+
+        private static WatermarkConfig? LoadFromPolicy()
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey("Software\\Policies\\WatermarkOverlay");
+                if (key == null) return null;
+                var cfg = new WatermarkConfig();
+                cfg.Mode = Enum.TryParse<DisplayMode>(key.GetValue("Mode") as string, true, out var m) ? m : cfg.Mode;
+                cfg.Corner = Enum.TryParse<Corner>(key.GetValue("Corner") as string, true, out var c) ? c : cfg.Corner;
+                cfg.ShowUsername = GetBool(key, "ShowUsername", cfg.ShowUsername);
+                cfg.ShowTime = GetBool(key, "ShowTime", cfg.ShowTime);
+                cfg.TimeFormat = (key.GetValue("TimeFormat") as string) ?? cfg.TimeFormat;
+                cfg.FallbackText = key.GetValue("FallbackText") as string ?? cfg.FallbackText;
+                cfg.FontSize = GetDouble(key, "FontSize", cfg.FontSize);
+                cfg.Opacity = GetDouble(key, "Opacity", cfg.Opacity);
+                var colorStr = key.GetValue("Color") as string;
+                if (!string.IsNullOrWhiteSpace(colorStr))
+                    cfg.Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(colorStr)!;
+                cfg.TileAngleDegrees = GetDouble(key, "TileAngleDegrees", cfg.TileAngleDegrees);
+                cfg.TileStep = GetDouble(key, "TileStep", cfg.TileStep);
+                return cfg;
+            }
+            catch { return null; }
+        }
+
+        private static bool GetBool(RegistryKey key, string name, bool defaultValue)
+        {
+            try
+            {
+                var v = key.GetValue(name);
+                if (v is int i) return i != 0;
+                if (v is string s && bool.TryParse(s, out var b)) return b;
+            }
+            catch { }
+            return defaultValue;
+        }
+
+        private static double GetDouble(RegistryKey key, string name, double def)
+        {
+            try
+            {
+                var v = key.GetValue(name);
+                if (v is int i) return i;
+                if (v is string s && double.TryParse(s, out var d)) return d;
+            }
+            catch { }
+            return def;
         }
     }
 
