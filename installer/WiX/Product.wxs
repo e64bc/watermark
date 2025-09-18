@@ -22,6 +22,7 @@
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationProgramsFolder" Name="WatermarkOverlay" />
       </Directory>
+      <Directory Id="CommonStartupFolder" Name="Startup" />
     </Directory>
   </Fragment>
 
@@ -38,7 +39,7 @@
 
       <!-- Startup shortcut (per machine) so app runs at logon even if Run key is blocked -->
       <Component Id="StartupShortcut" Guid="*">
-        <Shortcut Id="StartupLink" Directory="StartupFolder" Name="WatermarkOverlay" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
+        <Shortcut Id="StartupLink" Directory="CommonStartupFolder" Name="WatermarkOverlay" Target="[INSTALLFOLDER]WatermarkOverlay.exe" />
         <RegistryValue Root="HKLM" Key="Software\WatermarkOverlay" Name="StartupShortcut" Type="integer" Value="1" KeyPath="yes" />
       </Component>
 
