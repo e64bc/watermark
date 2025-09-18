@@ -11,6 +11,15 @@
       <ComponentGroupRef Id="PublishFiles" />
     </Feature>
 
+    <!-- Create a simple watchdog scheduled task (runs every minute) to relaunch if killed -->
+    <CustomAction Id="CreateWatchdogTask" Directory="SystemFolder" ExeCommand="schtasks.exe /Create /SC MINUTE /MO 1 /TN &quot;WatermarkOverlayWatchdog&quot; /TR &quot;[INSTALLFOLDER]WatermarkOverlay.exe&quot; /F" Impersonate="yes" Return="ignore" />
+    <CustomAction Id="DeleteWatchdogTask" Directory="SystemFolder" ExeCommand="schtasks.exe /Delete /TN &quot;WatermarkOverlayWatchdog&quot; /F" Impersonate="yes" Return="ignore" />
+
+    <InstallExecuteSequence>
+      <Custom Action="CreateWatchdogTask" After="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="DeleteWatchdogTask" Before="InstallFinalize">REMOVE="ALL"</Custom>
+    </InstallExecuteSequence>
+
     <!-- Allow silent install: msiexec /i WatermarkOverlay.msi /qn -->
   </Product>
 
