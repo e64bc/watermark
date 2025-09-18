@@ -77,17 +77,20 @@ namespace WatermarkOverlay
             tb.Opacity = _config.Opacity;
 
             var margin = 12.0;
+            // Measure text to avoid clipping on right/bottom edges
+            tb.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var size = tb.DesiredSize;
             double x = 0, y = 0;
             switch (_config.Corner)
             {
                 case Corner.TopLeft:
-                    x = margin; y = margin; break;
+                    x = margin; y = margin; tb.TextAlignment = TextAlignment.Left; break;
                 case Corner.TopRight:
-                    x = Width - margin; y = margin; tb.TextAlignment = TextAlignment.Right; break;
+                    x = Math.Max(0, Width - margin - size.Width); y = margin; tb.TextAlignment = TextAlignment.Right; break;
                 case Corner.BottomLeft:
-                    x = margin; y = Height - margin; tb.TextAlignment = TextAlignment.Left; break;
+                    x = margin; y = Math.Max(0, Height - margin - size.Height); tb.TextAlignment = TextAlignment.Left; break;
                 case Corner.BottomRight:
-                    x = Width - margin; y = Height - margin; tb.TextAlignment = TextAlignment.Right; break;
+                    x = Math.Max(0, Width - margin - size.Width); y = Math.Max(0, Height - margin - size.Height); tb.TextAlignment = TextAlignment.Right; break;
             }
             Canvas.SetLeft(tb, x);
             Canvas.SetTop(tb, y);
@@ -99,7 +102,7 @@ namespace WatermarkOverlay
             double step = _config.TileStep <= 0 ? 320 : _config.TileStep;
             double angle = _config.TileAngleDegrees;
 
-            var brush = new VisualBrush(new TextBlock
+            var visual = new TextBlock
             {
                 Text = text,
                 FontSize = _config.FontSize,
@@ -107,11 +110,13 @@ namespace WatermarkOverlay
                 Foreground = new SolidColorBrush(_config.Color),
                 Opacity = _config.Opacity,
                 LayoutTransform = new RotateTransform(angle)
-            })
+            };
+            var brush = new VisualBrush(visual)
             {
                 TileMode = TileMode.Tile,
                 ViewportUnits = BrushMappingMode.Absolute,
                 Viewport = new Rect(0, 0, step, step),
+                Stretch = Stretch.None,
                 AlignmentX = AlignmentX.Center,
                 AlignmentY = AlignmentY.Center
             };
