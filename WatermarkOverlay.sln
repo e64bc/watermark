@@ -4,6 +4,8 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkOverlay", "src/WatermarkOverlay/WatermarkOverlay.csproj", "{66A2E479-7D7C-4B99-9E2F-6A6B1E9B7C16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatermarkConfigurator", "src/WatermarkConfigurator/WatermarkConfigurator.csproj", "{9E6B1D47-7B77-4F8E-9A6A-1B8B6D7C3C10}"
+EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WatermarkOverlayInstaller", "installer/WiX/WatermarkOverlayInstaller.wixproj", "{F5A4D8D3-3E6D-49B5-9A2D-8D3F9A1F0F77}"
 EndProject
 Global

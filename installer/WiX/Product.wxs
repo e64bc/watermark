@@ -10,6 +10,7 @@
       <!-- Harvested files from publish folder -->
       <ComponentGroupRef Id="PublishFiles" />
       <ComponentGroupRef Id="ProgramDataComponents" />
+      <ComponentGroupRef Id="ConfiguratorComponents" />
     </Feature>
 
     <!-- Allow silent install: msiexec /i WatermarkOverlay.msi /qn -->
@@ -63,6 +64,15 @@
     <ComponentGroup Id="ProgramDataComponents" Directory="ProgramDataWatermarkOverlay">
       <Component Id="ProgramDataConfig" Guid="*">
         <File Source="src\WatermarkOverlay\bin\Release\net8.0-windows\win-x64\publish\appsettings.json" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ConfiguratorComponents" Directory="INSTALLFOLDER">
+      <Component Id="ConfiguratorExe" Guid="*">
+        <File Source="src\WatermarkConfigurator\bin\Release\net8.0-windows\WatermarkConfigurator.exe" KeyPath="yes" />
+        <Shortcut Id="ConfiguratorShortcut" Directory="ApplicationProgramsFolder" Name="Watermark Configurator (Admin)" Target="[INSTALLFOLDER]WatermarkConfigurator.exe" />
       </Component>
     </ComponentGroup>
   </Fragment>
