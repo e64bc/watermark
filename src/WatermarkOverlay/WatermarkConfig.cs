@@ -25,11 +25,27 @@ namespace WatermarkOverlay
         public double TileStep { get; set; } = 360;
 
         public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+        public static string UserConfigPath
+        {
+            get
+            {
+                var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var dir = Path.Combine(appData, "WatermarkOverlay");
+                try { Directory.CreateDirectory(dir); } catch { }
+                return Path.Combine(dir, "appsettings.json");
+            }
+        }
 
         public static WatermarkConfig Load()
         {
             try
             {
+                if (File.Exists(UserConfigPath))
+                {
+                    var textUser = File.ReadAllText(UserConfigPath);
+                    var cfgUser = JsonConvert.DeserializeObject<WatermarkConfigOnDisk>(textUser);
+                    return cfgUser?.ToConfig() ?? new WatermarkConfig();
+                }
                 if (File.Exists(ConfigPath))
                 {
                     var text = File.ReadAllText(ConfigPath);

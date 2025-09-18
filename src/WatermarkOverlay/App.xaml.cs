@@ -23,6 +23,28 @@ namespace WatermarkOverlay
             }
             // Hide main window immediately; we'll spawn overlay windows only.
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            // Watchdog: if overlay exits unexpectedly, relaunch
+            AppDomain.CurrentDomain.UnhandledException += (_, __) => Relaunch();
+            this.Exit += (_, __) => { };
+        }
+
+        private static void Relaunch()
+        {
+            try
+            {
+                var exe = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+                if (!string.IsNullOrEmpty(exe))
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = exe,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    });
+                }
+            }
+            catch { }
         }
     }
 }
