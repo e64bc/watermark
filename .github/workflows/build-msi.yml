@@ -60,7 +60,7 @@ jobs:
             -srd -sreg -gg -sfrag -var var.PublishDir -out $harvest
           # Build the app first (already done above)
           # Compile .wxs -> .wixobj; pass Configuration var so paths resolve
-          candle.exe -dPublishDir="$publishDir" -out "$objDir/" $wxs $harvest
+          candle.exe -ext WixUtilExtension -dPublishDir="$publishDir" -out "$objDir/" $wxs $harvest
           # Link -> .msi; include NetFx extension if needed
           light.exe -ext WixNetFxExtension -ext WixUtilExtension -out "$binDir/WatermarkOverlay.msi" "$objDir/Product.wixobj" "$objDir/PublishFiles.wixobj"
 
